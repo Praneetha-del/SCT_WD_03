@@ -261,6 +261,76 @@
             0% { background-position: 200% 0; }
             100% { background-position: -200% 0; }
         }
+           footer {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 20px 0;
+        margin-top: 30px;
+        text-align: center;
+        position: relative;
+        z-index: 10;
+    }
+
+    .footer-content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+    }
+
+    .footer-link {
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        position: relative;
+        padding: 5px 0;
+    }
+
+    .footer-link:hover {
+        color: var(--primary);
+    }
+
+    .footer-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--primary);
+        transition: width 0.3s ease;
+    }
+
+    .footer-link:hover::after {
+        width: 100%;
+    }
+
+    .footer-copyright {
+        color: var(--text-light);
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+        .footer-links {
+            gap: 15px;
+        }
+        .footer-link {
+            font-size: 0.9rem;
+        }
+        .footer-copyright {
+            font-size: 0.8rem;
+            color:black;
+        }
+    }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -486,6 +556,19 @@
 
         // Start the game
         initGame();
+           document.getElementById('current-year').textContent = new Date().getFullYear();
     </script>
+    <footer>
+    <div class="footer-content">
+        <div class="footer-links">
+            <a href="#" class="footer-link">About</a>
+            <a href="#" class="footer-link">More Games</a>
+            <a href="#" class="footer-link">Contact</a>
+        </div>
+        <div class="footer-copyright" style="color:black;">
+            © <span id="current-year"></span> Riddle Rush. All rights reserved.
+        </div>
+    </div>
+</footer>
 </body>
 </html>
