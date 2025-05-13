@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Riddle Rush</title>
+    <title>Brain Bloom</title>
     <style>
-        :root {
-            --primary: #6C63FF;
+:root {
+        --primary: #6C63FF;
             --primary-light: #8E85FF;
             --secondary: #FF6584;
             --secondary-light: #FF8FA3;
@@ -16,29 +16,31 @@
             --text: #2D3748;
             --text-light: #718096;
             --shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
+}
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: var(--text);
-            margin: 0;
-            padding: 20px;
-            min-height: 100vh;
-            line-height: 1.6;
-            box-sizing: border-box;
-        }
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: var(--text);
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 
-        .container {
-            background-color: var(--card);
+.quiz-container {
+     background-color: var(--card);
             padding: 20px;
             border-radius: 16px;
             box-shadow: var(--shadow);
@@ -47,24 +49,26 @@
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.3);
             width: calc(100% - 40px);
-        }
+}
 
-        h1 {
-            text-align: center;
+h1 {
+    text-align: center;
             color: var(--primary);
             margin-bottom: 20px;
             font-size: clamp(1.8rem, 5vw, 2.5rem);
             font-weight: 700;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        }
+}
 
-        .riddle-container {
-            min-height: 120px;
-            margin-bottom: 15px;
-        }
+.question-number {
+    text-align: right;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: var(--text-light);
+}
 
-        .riddle-text {
-            font-size: clamp(1.2rem, 4vw, 1.5rem);
+.question-container {
+   font-size: clamp(1.2rem, 4vw, 1.5rem);
             font-weight: 600;
             margin-bottom: 15px;
             text-align: center;
@@ -73,10 +77,56 @@
             background-color: rgba(108, 99, 255, 0.1);
             border-radius: 12px;
             border-left: 4px solid var(--primary);
-        }
+}
 
-        .answer-input {
-            width: calc(100% - 30px);
+.question {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: #2d2d2d; /* Dark grayish-black text */
+}
+@media (max-width: 600px) {
+    .question {
+        font-size: 1.2rem;
+    }
+
+    .question-container {
+        padding: 15px;
+    }
+}
+
+
+.answer-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.option {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    color: var(--text);
+}
+
+.option:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.option input {
+    margin-right: 10px;
+    transform: scale(1.2);
+}
+
+.text-answer {
+    width: calc(100% - 30px);
             padding: 12px 15px;
             font-size: 1rem;
             border: 2px solid var(--primary-light);
@@ -87,13 +137,16 @@
             color: var(--text);
         }
 
-        .answer-input:focus {
-            border-color: var(--primary);
+.text-answer::placeholder {
+    color: rgb(8, 4, 58);
+}
+
+.text-answer:focus {
+    border-color: var(--primary);
             outline: none;
             box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
-        }
-
-        .buttons {
+}
+ .buttons {
             display: flex;
             flex-direction: column;
             gap: 10px;
@@ -132,12 +185,12 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .submit-btn {
-            background-color: var(--primary);
-            color: white;
-        }
+.submit-btn {
+    background: var(--primary);
+    color: white;
+}
 
-        .submit-btn:hover {
+  .submit-btn:hover {
             background-color: var(--primary-light);
         }
 
@@ -146,18 +199,19 @@
             color: white;
         }
 
-        .skip-btn:hover {
+.skip-btn:hover {
             background-color: var(--secondary-light);
         }
 
-        .hint-btn {
+.hint-btn {
             background-color: var(--accent);
             color: white;
         }
 
-        .hint-btn:hover {
+.hint-btn:hover {
             background-color: var(--accent-light);
         }
+
 
         .score-container {
             display: flex;
@@ -169,7 +223,7 @@
             padding: 12px;
             border-radius: 12px;
         }
-
+        
         @media (min-width: 400px) {
             .score-container {
                 flex-direction: row;
@@ -178,7 +232,7 @@
             }
         }
 
-        .hint-text {
+ .hint-text {
             margin-top: 10px;
             font-style: italic;
             color: var(--text-light);
@@ -196,8 +250,8 @@
             }
         }
 
-        .celebration {
-            position: fixed;
+.emoji-feedback {
+    position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -208,9 +262,8 @@
             pointer-events: none;
             text-shadow: 0 0 20px rgba(255, 101, 132, 0.7);
             animation: float 2s infinite alternate;
-        }
-
-        @keyframes float {
+}
+  @keyframes float {
             0% { transform: translate(-50%, -50%) scale(1); }
             100% { transform: translate(-50%, -60%) scale(1.1); }
         }
@@ -261,106 +314,55 @@
             0% { background-position: 200% 0; }
             100% { background-position: -200% 0; }
         }
-           footer {
-        background: rgba(255, 255, 255, 0.2);
-        backdrop-filter: blur(10px);
-        border-top: 1px solid rgba(255, 255, 255, 0.3);
-        padding: 20px 0;
-        margin-top: 30px;
-        text-align: center;
-        position: relative;
-        z-index: 10;
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+    .quiz-container {
+        padding: 20px;
     }
 
-    .footer-content {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 0 20px;
+    .question {
+        font-size: 1.2rem;
     }
 
-    .footer-links {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        margin-bottom: 15px;
-        flex-wrap: wrap;
-    }
-
-    .footer-link {
-        color: var(--text);
-        text-decoration: none;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        position: relative;
-        padding: 5px 0;
-    }
-
-    .footer-link:hover {
-        color: var(--primary);
-    }
-
-    .footer-link::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 0;
-        height: 2px;
-        background: var(--primary);
-        transition: width 0.3s ease;
-    }
-
-    .footer-link:hover::after {
-        width: 100%;
-    }
-
-    .footer-copyright {
-        color: var(--text-light);
+    button {
+        padding: 10px 15px;
         font-size: 0.9rem;
     }
+}
+</style>
 
-    @media (max-width: 600px) {
-        .footer-links {
-            gap: 15px;
-        }
-        .footer-link {
-            font-size: 0.9rem;
-        }
-        .footer-copyright {
-            font-size: 0.8rem;
-            color:black;
-        }
-    }
-    </style>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1>Riddle Rush</h1>
-        
-        <div class="score-container">
+    <div class="quiz-container">
+        <h1>🧠 Brain Bloom </h1>
+          <div class="score-container">
             <div>✨ Score: <span id="score">0</span></div>
-            <div>🔍 Riddle: <span id="riddleCount">1</span>/<span id="totalRiddles">10</span></div>
+            <div class="question-number"> Questions:  <span id="current-q">1</span>/<span id="total-q">10</span></div>
         </div>
+        
         
         <div class="progress-container">
-            <div class="progress-bar" id="progressBar"></div>
+            <div class="progress-bar" id="progress-bar"></div>
         </div>
         
-        <div class="riddle-container">
-            <div class="riddle-text" id="riddleText"></div>
-            <input type="text" class="answer-input" id="answerInput" placeholder="Type your answer here...">
-            <div class="hint-text" id="hintText"></div>
+        <div class="question-container" id="question-container">
+            <!-- Questions will be loaded here -->
         </div>
+        
+        <div class="hint-text" id="hint-text"></div>
         
         <div class="buttons">
-            <button class="hint-btn" id="hintBtn">💡 Hint (-2 points)</button>
-            <button class="skip-btn" id="skipBtn">⏭️ Skip (-5 points)</button>
-            <button class="submit-btn" id="submitBtn">🚀 Submit</button>
+            <button class="hint-btn" id="hint-btn">💡 Hint (-2 points)</button>
+            <button class="skip-btn" id="skip-btn">⏭ Skip (-5 points)</button>
+            <button class="submit-btn" id="submit-btn">Submit Answer</button>
         </div>
     </div>
     
-    <div class="celebration" id="celebration">🎉</div>
+    <div class="emoji-feedback" id="emoji-feedback"></div>
     
     <script>
         // Game data
@@ -368,207 +370,234 @@
             {
                 question: "I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?",
                 answer: "echo",
-                hint: "You might hear me in a canyon"
+                hint: "You might hear me in a canyon",
+                type: "text"
             },
             {
                 question: "The more you take, the more you leave behind. What am I?",
                 answer: "footsteps",
-                hint: "Think about walking"
+                hint: "Think about walking",
+                type: "text"
             },
             {
                 question: "What has keys but can't open locks?",
                 answer: "piano",
-                hint: "It's a musical instrument"
+                hint: "It's a musical instrument",
+                type: "text"
             },
             {
                 question: "What has to be broken before you can use it?",
                 answer: "egg",
-                hint: "Think about breakfast"
+                hint: "Think about breakfast",
+                type: "text"
             },
             {
                 question: "I'm tall when I'm young, and I'm short when I'm old. What am I?",
                 answer: "candle",
-                hint: "It produces light"
-            },
-            {
-                question: "What has a head, a tail, is brown, and has no legs?",
-                answer: "penny",
-                hint: "It's a form of currency"
-            },
-            {
-                question: "What can travel around the world while staying in a corner?",
-                answer: "stamp",
-                hint: "Think about mail"
-            },
-            {
-                question: "What has many needles but doesn't sew?",
-                answer: "pine tree",
-                hint: "It's found in forests"
-            },
-            {
-                question: "What has hands but can't clap?",
-                answer: "clock",
-                hint: "It tells time"
-            },
-            {
-                question: "What gets wetter as it dries?",
-                answer: "towel",
-                hint: "You use it after a shower"
+                hint: "It produces light",
+                type: "text"
             }
         ];
 
+        const mcQuestions = [
+            {
+                question: "Which of these are primary colors? (Select all that apply)",
+                options: ["Red", "Blue", "Green", "Yellow", "Purple"],
+                answer: [0, 1], // Red and Blue
+                type: "multi",
+                hint: "Think about the basic colors that can't be created by mixing others"
+            },
+            {
+                question: "What is the capital of Japan?",
+                options: ["Beijing", "Seoul", "Tokyo", "Bangkok"],
+                answer: [2], // Tokyo
+                type: "single",
+                hint: "It's a city known for its advanced technology and cherry blossoms"
+            },
+            {
+                question: "Which planets are known as gas giants in our solar system? (Select all that apply)",
+                options: ["Mars", "Jupiter", "Venus", "Saturn", "Uranus", "Neptune"],
+                answer: [1, 3, 4, 5], // Jupiter, Saturn, Uranus, Neptune
+                type: "multi",
+                hint: "They are much larger than Earth and don't have solid surfaces"
+            },
+            {
+                question: "Who painted the Mona Lisa?",
+                options: ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"],
+                answer: [2], // Leonardo da Vinci
+                type: "single",
+                hint: "He was an Italian polymath from the Renaissance period"
+            },
+            {
+                question: "Which of these are programming languages? (Select all that apply)",
+                options: ["HTML", "Python", "CSS", "Java", "JSON"],
+                answer: [1, 3], // Python and Java
+                type: "multi",
+                hint: "Think about languages used to write software applications"
+            }
+        ];
+
+        // Combine and shuffle questions
+        const allQuestions = [...riddles, ...mcQuestions].sort(() => Math.random() - 0.5);
+        const totalQuestions = allQuestions.length;
+        
         // Game state
-        let currentRiddleIndex = 0;
+        let currentQuestionIndex = 0;
         let score = 0;
-        let usedHint = false;
-        let shuffledRiddles = [...riddles];
-
+        let hintUsed = false;
+        
         // DOM elements
-        const riddleText = document.getElementById('riddleText');
-        const answerInput = document.getElementById('answerInput');
-        const hintText = document.getElementById('hintText');
+        const questionContainer = document.getElementById('question-container');
+        const hintText = document.getElementById('hint-text');
+        const hintBtn = document.getElementById('hint-btn');
+        const skipBtn = document.getElementById('skip-btn');
+        const submitBtn = document.getElementById('submit-btn');
         const scoreDisplay = document.getElementById('score');
-        const riddleCountDisplay = document.getElementById('riddleCount');
-        const totalRiddlesDisplay = document.getElementById('totalRiddles');
-        const progressBar = document.getElementById('progressBar');
-        const celebration = document.getElementById('celebration');
-
-        // Initialize game
-        function initGame() {
-            // Shuffle riddles for variety
-            shuffledRiddles = shuffleArray([...riddles]);
-            currentRiddleIndex = 0;
-            score = 0;
-            updateScore();
-            totalRiddlesDisplay.textContent = riddles.length;
-            loadRiddle();
-        }
-
-        // Shuffle array function
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-
-        // Load current riddle
-        function loadRiddle() {
-            if (currentRiddleIndex >= shuffledRiddles.length) {
-                endGame();
-                return;
-            }
-
-            const currentRiddle = shuffledRiddles[currentRiddleIndex];
-            riddleText.textContent = currentRiddle.question;
-            answerInput.value = '';
-            hintText.textContent = '';
-            usedHint = false;
-            answerInput.focus();
-            riddleCountDisplay.textContent = currentRiddleIndex + 1;
-            updateProgressBar();
-        }
-
-        // Check answer
-        function checkAnswer() {
-            const userAnswer = answerInput.value.trim().toLowerCase();
-            const correctAnswer = shuffledRiddles[currentRiddleIndex].answer.toLowerCase();
-
-            if (userAnswer === '') return;
-
-            if (userAnswer === correctAnswer) {
-                // Correct answer
-                score += usedHint ? 3 : 5; // Less points if hint was used
-                updateScore();
-                showCelebration();
-                setTimeout(() => {
-                    currentRiddleIndex++;
-                    loadRiddle();
-                }, 1500); // Wait 1.5 seconds before next question
-            } else {
-                // Wrong answer
-                hintText.textContent = `❌ Not quite! Try again. The answer starts with "${correctAnswer.charAt(0)}"`;
-                answerInput.value = '';
-                answerInput.focus();
-            }
-        }
-
-        // Show celebration emoji
-        function showCelebration() {
-            celebration.style.opacity = '1';
-            setTimeout(() => {
-                celebration.style.opacity = '0';
-            }, 1500); // Show for 1.5 seconds
-        }
-
-        // Skip current riddle
-        function skipRiddle() {
-            score = Math.max(0, score - 5); // Deduct 5 points (minimum 0)
-            updateScore();
-            currentRiddleIndex++;
-            loadRiddle();
-        }
-
-        // Show hint
-        function showHint() {
-            if (!usedHint) {
-                hintText.textContent = `💡 Hint: ${shuffledRiddles[currentRiddleIndex].hint}`;
-                usedHint = true;
-                score = Math.max(0, score - 2); // Deduct 2 points (minimum 0)
-                updateScore();
-            }
-        }
-
-        // Update score display
-        function updateScore() {
-            scoreDisplay.textContent = score;
-        }
-
-        // Update progress bar
-        function updateProgressBar() {
-            const progress = ((currentRiddleIndex) / shuffledRiddles.length) * 100;
-            progressBar.style.width = `${progress}%`;
-        }
-
-        // End game
-        function endGame() {
-            riddleText.innerHTML = `🎊 Game Over! 🎊<br>Your final score is <strong>${score}/${shuffledRiddles.length * 5}</strong>`;
-            answerInput.style.display = 'none';
-            document.getElementById('submitBtn').style.display = 'none';
-            document.getElementById('hintBtn').style.display = 'none';
-            document.getElementById('skipBtn').style.display = 'none';
-            hintText.textContent = 'Refresh the page to play again!';
-            progressBar.style.width = '100%';
-        }
-
+        const emojiFeedback = document.getElementById('emoji-feedback');
+        const currentQDisplay = document.getElementById('current-q');
+        const totalQDisplay = document.getElementById('total-q');
+        const progressBar = document.getElementById('progress-bar');
+        
+        // Initialize
+        totalQDisplay.textContent = totalQuestions;
+        loadQuestion();
+        
         // Event listeners
-        document.getElementById('submitBtn').addEventListener('click', checkAnswer);
-        document.getElementById('skipBtn').addEventListener('click', skipRiddle);
-        document.getElementById('hintBtn').addEventListener('click', showHint);
-
-        // Allow Enter key to submit answer
-        answerInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkAnswer();
+        hintBtn.addEventListener('click', showHint);
+        skipBtn.addEventListener('click', skipQuestion);
+        submitBtn.addEventListener('click', checkAnswer);
+        
+        // Functions
+        function loadQuestion() {
+            const currentQuestion = allQuestions[currentQuestionIndex];
+            hintUsed = false;
+            hintText.style.display = 'none';
+            
+            // Update progress
+            currentQDisplay.textContent = currentQuestionIndex + 1;
+            progressBar.style.width = `${((currentQuestionIndex + 1) / totalQuestions) * 100}%`;
+            
+            let questionHTML = `<div class="question">${currentQuestion.question}</div><div class="answer-options">`;
+            
+            if (currentQuestion.type === 'text') {
+                questionHTML += `
+                    <input type="text" class="text-answer" id="text-answer" placeholder="Type your answer here..." autocomplete="off">
+                `;
+            } else {
+                currentQuestion.options.forEach((option, index) => {
+                    const inputType = currentQuestion.type === 'multi' ? 'checkbox' : 'radio';
+                    questionHTML += `
+                        <label class="option">
+                            <input type="${inputType}" name="answer" value="${index}">
+                            ${option}
+                        </label>
+                    `;
+                });
             }
-        });
-
-        // Start the game
-        initGame();
-           document.getElementById('current-year').textContent = new Date().getFullYear();
+            
+            questionHTML += `</div>`;
+            questionContainer.innerHTML = questionHTML;
+        }
+        
+        function showHint() {
+            if (hintUsed) return;
+            
+            const currentQuestion = allQuestions[currentQuestionIndex];
+            hintText.textContent = currentQuestion.hint;
+            hintText.style.display = 'block';
+            score -= 2;
+            updateScore();
+            hintUsed = true;
+        }
+        
+        function skipQuestion() {
+            score -= 5;
+            updateScore();
+            nextQuestion();
+        }
+        
+        function checkAnswer() {
+            const currentQuestion = allQuestions[currentQuestionIndex];
+            let isCorrect = false;
+            
+            if (currentQuestion.type === 'text') {
+                const userAnswer = document.getElementById('text-answer').value.trim().toLowerCase();
+                isCorrect = userAnswer === currentQuestion.answer.toLowerCase();
+            } else {
+                const selectedOptions = Array.from(document.querySelectorAll('input[name="answer"]:checked')).map(el => parseInt(el.value));
+                
+                if (currentQuestion.type === 'single') {
+                    isCorrect = selectedOptions.length === 1 && selectedOptions[0] === currentQuestion.answer[0];
+                } else {
+                    // For multi-select, check if all correct answers are selected and no incorrect ones
+                    const correctAnswers = new Set(currentQuestion.answer);
+                    const userAnswers = new Set(selectedOptions);
+                    
+                    isCorrect = selectedOptions.length === currentQuestion.answer.length && 
+                                currentQuestion.answer.every(ans => userAnswers.has(ans)) &&
+                                selectedOptions.every(ans => correctAnswers.has(ans));
+                }
+            }
+            
+            if (isCorrect) {
+                score += 10;
+                updateScore();
+                showEmojiFeedback('🎉');
+            } else {
+                showEmojiFeedback('❌');
+            }
+            
+            setTimeout(nextQuestion, isCorrect ? 2000 : 1000);
+        }
+        
+        function showEmojiFeedback(emoji) {
+            emojiFeedback.textContent = emoji;
+            emojiFeedback.style.opacity = '1';
+            
+            setTimeout(() => {
+                emojiFeedback.style.opacity = '0';
+            }, 2000);
+        }
+        
+        function nextQuestion() {
+            currentQuestionIndex++;
+            
+            if (currentQuestionIndex < totalQuestions) {
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+        
+        function updateScore() {
+            scoreDisplay.textContent = Math.max(0, score); // Ensure score doesn't go below 0
+        }
+        
+        function endGame() {
+            questionContainer.innerHTML = `
+                <div class="question" style="text-align: center;">
+                    <h2>Quiz Completed!</h2>
+                    <p>Your final score is: <strong>${score}/${totalQuestions * 10}</strong></p>
+                    <p>${getFeedbackMessage()}</p>
+                    <button onclick="location.reload()" style="margin-top: 20px; background: var(--success);">Play Again</button>
+                </div>
+            `;
+            
+            hintBtn.style.display = 'none';
+            skipBtn.style.display = 'none';
+            submitBtn.style.display = 'none';
+        }
+        
+        function getFeedbackMessage() {
+            const percentage = (score / (totalQuestions * 10)) * 100;
+            
+            if (percentage >= 90) return "🏆 Genius level! You're a quiz master!";
+            if (percentage >= 70) return "🌟 Excellent job! You know your stuff!";
+            if (percentage >= 50) return "👍 Good effort! Keep learning!";
+            if (percentage >= 30) return "💡 Not bad, but room for improvement!";
+            return "🤔 Keep practicing! You'll get better!";
+        }
     </script>
-    <footer>
-    <div class="footer-content">
-        <div class="footer-links">
-            <a href="#" class="footer-link">About</a>
-            <a href="#" class="footer-link">More Games</a>
-            <a href="#" class="footer-link">Contact</a>
-        </div>
-        <div class="footer-copyright" style="color:black;">
-            © <span id="current-year"></span> Riddle Rush. All rights reserved.
-        </div>
-    </div>
-</footer>
+    
 </body>
 </html>
