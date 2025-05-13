@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riddle Rush</title>
+    <style>
+        :root {
+            --primary: #6C63FF;
+            --primary-light: #8E85FF;
+            --secondary: #FF6584;
+            --secondary-light: #FF8FA3;
+            --accent: #00BFA6;
+            --accent-light: #26D7BD;
+            --card: rgba(255, 255, 255, 0.9);
+            --text: #2D3748;
+            --text-light: #718096;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            line-height: 1.6;
+            box-sizing: border-box;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background-color: var(--card);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            margin: 20px auto;
+            max-width: 800px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            width: calc(100% - 40px);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .riddle-container {
+            min-height: 120px;
+            margin-bottom: 15px;
+        }
+
+        .riddle-text {
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+            color: var(--text);
+            padding: 15px;
+            background-color: rgba(108, 99, 255, 0.1);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .answer-input {
+            width: calc(100% - 30px);
+            padding: 12px 15px;
+            font-size: 1rem;
+            border: 2px solid var(--primary-light);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: var(--text);
+        }
+
+        .answer-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        @media (min-width: 500px) {
+            .buttons {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+
+        button {
+            padding: 12px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        @media (min-width: 500px) {
+            button {
+                width: auto;
+                flex: 1;
+                min-width: 100px;
+                padding: 12px 15px;
+            }
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .submit-btn {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-light);
+        }
+
+        .skip-btn {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .skip-btn:hover {
+            background-color: var(--secondary-light);
+        }
+
+        .hint-btn {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .hint-btn:hover {
+            background-color: var(--accent-light);
+        }
+
+        .score-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            background-color: rgba(108, 99, 255, 0.1);
+            padding: 12px;
+            border-radius: 12px;
+        }
+
+        @media (min-width: 400px) {
+            .score-container {
+                flex-direction: row;
+                justify-content: space-between;
+                font-size: 1.2rem;
+            }
+        }
+
+        .hint-text {
+            margin-top: 10px;
+            font-style: italic;
+            color: var(--text-light);
+            min-height: 20px;
+            padding: 10px;
+            background-color: rgba(0, 191, 166, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid var(--accent);
+            font-size: 0.9rem;
+        }
+
+        @media (min-width: 500px) {
+            .hint-text {
+                font-size: 1rem;
+            }
+        }
+
+        .celebration {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: clamp(5rem, 20vw, 8rem);
+            opacity: 0;
+            transition: all 0.5s ease;
+            z-index: 100;
+            pointer-events: none;
+            text-shadow: 0 0 20px rgba(255, 101, 132, 0.7);
+            animation: float 2s infinite alternate;
+        }
+
+        @keyframes float {
+            0% { transform: translate(-50%, -50%) scale(1); }
+            100% { transform: translate(-50%, -60%) scale(1.1); }
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: rgba(108, 99, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            height: 10px;
+            overflow: hidden;
+        }
+
+        @media (min-width: 500px) {
+            .progress-container {
+                height: 12px;
+            }
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.5s ease;
+            position: relative;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0.5) 50%,
+                rgba(255, 255, 255, 0.1) 100%
+            );
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+            border-radius: 10px;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Riddle Rush</h1>
+        
+        <div class="score-container">
+            <div>✨ Score: <span id="score">0</span></div>
+            <div>🔍 Riddle: <span id="riddleCount">1</span>/<span id="totalRiddles">10</span></div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        
+        <div class="riddle-container">
+            <div class="riddle-text" id="riddleText"></div>
+            <input type="text" class="answer-input" id="answerInput" placeholder="Type your answer here...">
+            <div class="hint-text" id="hintText"></div>
+        </div>
+        
+        <div class="buttons">
+            <button class="hint-btn" id="hintBtn">💡 Hint (-2 points)</button>
+            <button class="skip-btn" id="skipBtn">⏭️ Skip (-5 points)</button>
+            <button class="submit-btn" id="submitBtn">🚀 Submit</button>
+        </div>
+    </div>
+    
+    <div class="celebration" id="celebration">🎉</div>
+    
+    <script>
+        // Game data
+        const riddles = [
+            {
+                question: "I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?",
+                answer: "echo",
+                hint: "You might hear me in a canyon"
+            },
+            {
+                question: "The more you take, the more you leave behind. What am I?",
+                answer: "footsteps",
+                hint: "Think about walking"
+            },
+            {
+                question: "What has keys but can't open locks?",
+                answer: "piano",
+                hint: "It's a musical instrument"
+            },
+            {
+                question: "What has to be broken before you can use it?",
+                answer: "egg",
+                hint: "Think about breakfast"
+            },
+            {
+                question: "I'm tall when I'm young, and I'm short when I'm old. What am I?",
+                answer: "candle",
+                hint: "It produces light"
+            },
+            {
+                question: "What has a head, a tail, is brown, and has no legs?",
+                answer: "penny",
+                hint: "It's a form of currency"
+            },
+            {
+                question: "What can travel around the world while staying in a corner?",
+                answer: "stamp",
+                hint: "Think about mail"
+            },
+            {
+                question: "What has many needles but doesn't sew?",
+                answer: "pine tree",
+                hint: "It's found in forests"
+            },
+            {
+                question: "What has hands but can't clap?",
+                answer: "clock",
+                hint: "It tells time"
+            },
+            {
+                question: "What gets wetter as it dries?",
+                answer: "towel",
+                hint: "You use it after a shower"
+            }
+        ];
+
+        // Game state
+        let currentRiddleIndex = 0;
+        let score = 0;
+        let usedHint = false;
+        let shuffledRiddles = [...riddles];
+
+        // DOM elements
+        const riddleText = document.getElementById('riddleText');
+        const answerInput = document.getElementById('answerInput');
+        const hintText = document.getElementById('hintText');
+        const scoreDisplay = document.getElementById('score');
+        const riddleCountDisplay = document.getElementById('riddleCount');
+        const totalRiddlesDisplay = document.getElementById('totalRiddles');
+        const progressBar = document.getElementById('progressBar');
+        const celebration = document.getElementById('celebration');
+
+        // Initialize game
+        function initGame() {
+            // Shuffle riddles for variety
+            shuffledRiddles = shuffleArray([...riddles]);
+            currentRiddleIndex = 0;
+            score = 0;
+            updateScore();
+            totalRiddlesDisplay.textContent = riddles.length;
+            loadRiddle();
+        }
+
+        // Shuffle array function
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Load current riddle
+        function loadRiddle() {
+            if (currentRiddleIndex >= shuffledRiddles.length) {
+                endGame();
+                return;
+            }
+
+            const currentRiddle = shuffledRiddles[currentRiddleIndex];
+            riddleText.textContent = currentRiddle.question;
+            answerInput.value = '';
+            hintText.textContent = '';
+            usedHint = false;
+            answerInput.focus();
+            riddleCountDisplay.textContent = currentRiddleIndex + 1;
+            updateProgressBar();
+        }
+
+        // Check answer
+        function checkAnswer() {
+            const userAnswer = answerInput.value.trim().toLowerCase();
+            const correctAnswer = shuffledRiddles[currentRiddleIndex].answer.toLowerCase();
+
+            if (userAnswer === '') return;
+
+            if (userAnswer === correctAnswer) {
+                // Correct answer
+                score += usedHint ? 3 : 5; // Less points if hint was used
+                updateScore();
+                showCelebration();
+                setTimeout(() => {
+                    currentRiddleIndex++;
+                    loadRiddle();
+                }, 1500); // Wait 1.5 seconds before next question
+            } else {
+                // Wrong answer
+                hintText.textContent = `❌ Not quite! Try again. The answer starts with "${correctAnswer.charAt(0)}"`;
+                answerInput.value = '';
+                answerInput.focus();
+            }
+        }
+
+        // Show celebration emoji
+        function showCelebration() {
+            celebration.style.opacity = '1';
+            setTimeout(() => {
+                celebration.style.opacity = '0';
+            }, 1500); // Show for 1.5 seconds
+        }
+
+        // Skip current riddle
+        function skipRiddle() {
+            score = Math.max(0, score - 5); // Deduct 5 points (minimum 0)
+            updateScore();
+            currentRiddleIndex++;
+            loadRiddle();
+        }
+
+        // Show hint
+        function showHint() {
+            if (!usedHint) {
+                hintText.textContent = `💡 Hint: ${shuffledRiddles[currentRiddleIndex].hint}`;
+                usedHint = true;
+                score = Math.max(0, score - 2); // Deduct 2 points (minimum 0)
+                updateScore();
+            }
+        }
+
+        // Update score display
+        function updateScore() {
+            scoreDisplay.textContent = score;
+        }
+
+        // Update progress bar
+        function updateProgressBar() {
+            const progress = ((currentRiddleIndex) / shuffledRiddles.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        // End game
+        function endGame() {
+            riddleText.innerHTML = `🎊 Game Over! 🎊<br>Your final score is <strong>${score}/${shuffledRiddles.length * 5}</strong>`;
+            answerInput.style.display = 'none';
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('hintBtn').style.display = 'none';
+            document.getElementById('skipBtn').style.display = 'none';
+            hintText.textContent = 'Refresh the page to play again!';
+            progressBar.style.width = '100%';
+        }
+
+        // Event listeners
+        document.getElementById('submitBtn').addEventListener('click', checkAnswer);
+        document.getElementById('skipBtn').addEventListener('click', skipRiddle);
+        document.getElementById('hintBtn').addEventListener('click', showHint);
+
+        // Allow Enter key to submit answer
+        answerInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+
+        // Start the game
+        initGame();
+    </script>
+</body>
+</html>
